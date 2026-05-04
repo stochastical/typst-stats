@@ -1,7 +1,47 @@
-#import "@preview/simple-plot:0.3.0": plot
+#import "@preview/simple-plot:0.3.0": line-plot, plot, scatter
 #import "./lib.typ": *
 
 == Discrete distributions
+
+=== Bernoulli distribution
+
+#let p = 0.8
+#let Be = bernoulli.pmf(p)
+#plot(
+  width: 4,
+  height: 4,
+  xmin: 0,
+  xmax: 1.4,
+  ymin: 0,
+  ymax: 1,
+  xlabel: $k$,
+  ylabel: $p(k)= cases(1-p &"if" k = 0, p &"if" k = 1)$,
+  axis-y-extend: 0,
+  axis-x-extend: 0,
+  scatter(((0, Be(0)),), label: $1-p=#{ calc.round(1 - p, digits: 2) }$, label-anchor: "south-west"),
+  scatter(((1, Be(1)),), label: $p=#{ calc.round(p, digits: 2) }$, label-anchor: "south"),
+)
+
+=== Binomial distribution
+
+#let (n, p) = (20, 0.5)
+#let Bi = binomial.pmf(n, p)
+
+#let points = range(0, n + 1).map(i => scatter(((i, Bi(i)),)))
+#let ymax = 1.2* points.map(p => p.points.at(0).at(1)).reduce((acc, x) => calc.max(acc, x))
+
+#plot(
+  width: 10,
+  height: 4,
+  xmin: 0,
+  xmax: n,
+  ymin: 0,
+  ymax: ymax,
+  xlabel: $k$,
+  ylabel: $p(k) = binom(n, k) p^k (1-p)^(n-k)$,
+  axis-y-extend: 0,
+  ..points,
+)
 
 === Geometric distribution
 
@@ -15,9 +55,9 @@
   xlabel: $x$,
   ylabel: $f(x) = (1-p)^(x-1)p$,
   axis-y-extend: 0,
-(fn: geometric-pmf(0.2), label: $p=0.2$, label-pos: 0.1, label-side: "below-left"),
-(fn: geometric-pmf(0.5), label: $p=0.5$, label-pos: 0.01, label-side: "left"),
-(fn: geometric-pmf(0.8), label: $p=0.8$, label-pos: 0.1, label-side: "right"),
+  (fn: geometric.pmf(0.2), label: $p=0.2$, label-pos: 0.1, label-side: "below-left"),
+  (fn: geometric.pmf(0.5), label: $p=0.5$, label-pos: 0.01, label-side: "left"),
+  (fn: geometric.pmf(0.8), label: $p=0.8$, label-pos: 0.1, label-side: "right"),
 )
 
 #plot(
@@ -31,9 +71,9 @@
   ylabel: $F(x) = 1 - (1-p)^x$,
 
   axis-y-extend: 0,
-  (fn: geometric-cdf(0.2), label: $p=0.2$, label-pos: 0.5, label-side: "below-right"),
-  (fn: geometric-cdf(0.5), label: $p=0.5$, label-pos: 0.5, label-side: "below-right"),
-  (fn: geometric-cdf(0.8), label: $p=0.8$, label-pos: 0.5, label-side: "above-right"),
+  (fn: geometric.cdf(0.2), label: $p=0.2$, label-pos: 0.5, label-side: "below-right"),
+  (fn: geometric.cdf(0.5), label: $p=0.5$, label-pos: 0.5, label-side: "below-right"),
+  (fn: geometric.cdf(0.8), label: $p=0.8$, label-pos: 0.5, label-side: "above-right"),
 )
 
 == Continuous distributions
@@ -48,7 +88,7 @@
   ymin: 0,
   ymax: 1,
   axis-y-extend: 0,
-  (fn: normal-pdf(0, 1)),
+  (fn: normal.pdf(0, 1)),
 )
 
 #plot(
@@ -59,5 +99,5 @@
   ymin: -1,
   ymax: 1,
   axis-y-extend: 0,
-  (fn: normal-cdf(0, 1)),
+  (fn: normal.cdf(0, 1)),
 )
