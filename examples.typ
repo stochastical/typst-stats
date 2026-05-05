@@ -30,6 +30,22 @@
     )
   ],
   [
+    #let p = 0.8
+    #let Be = bernoulli.cdf(p)
+    #plot(
+      width: 4,
+      height: 4,
+      xmin: -0.5,
+      xmax: 1.5,
+      ymin: 0,
+      ymax: 1.1,
+      xlabel: $k$,
+      ylabel: $F(k) = cases(0 &"if" k < 0, 1-p &"if" 0 <= k < 1, 1 &"if" k >= 1)$,
+      axis-y-extend: 0,
+      axis-x-extend: 0,
+      scatter(((0, Be(0)),), label: $1-p=#{ calc.round(1 - p, digits: 2) }$, label-anchor: "south-west"),
+      scatter(((1, Be(1)),), label: $p=#{ calc.round(p, digits: 2) }$, label-anchor: "south"),
+     )
   ],
 
   [Binomial],

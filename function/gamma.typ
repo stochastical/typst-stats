@@ -32,6 +32,22 @@
   -2.71994908488607703910e-9,
 )
 
+// Note that we add an extra guard for x <= 0 (we don't use the reflection formula for x < 0.5, so we need to handle negative x values separately) to avoid the singularity at x = 0 when evaluating the reflection formula for negative x values
+// TOOD: work out what the best way to handle out-of-domain values is (e.g. return NaN, 0, or throw an error)
+#let gamma(x) = {
+  if x <= 0.0 {
+    float.nan
+  } else if x < 0.5 {
+    let s = GAMMA_DK.enumerate().slice(1).fold(GAMMA_DK.at(0), (s, t) => s + t.at(1) / (t.at(0) - x))
+
+    pi / (sin(pi * x) * s * TWO_SQRT_E_OVER_PI * (pow((0.5 - x + GAMMA_R) / e, 0.5 - x)))
+  } else {
+    let s = GAMMA_DK.enumerate().slice(1).fold(GAMMA_DK.at(0), (s, t) => s + t.at(1) / (x + t.at(0) - 1.0))
+
+    s * 2 * sqrt(e / pi) * pow((x - 0.5 + GAMMA_R) / exp(1), x - 0.5)
+  }
+}
+
 #let ln_gamma(x) = {
   if x < 0.5 {
     let s = GAMMA_DK.enumerate().slice(1).fold(GAMMA_DK.at(0), (s, t) => s + t.at(1) / (t.at(0) - x))
@@ -44,7 +60,19 @@
   }
 }
 
-#let lower_incomplete_gamma(a, x) = {
+/// Computes the lower incomplete regularized gamma function
+/// `P(a,x) = 1 / Gamma(a) * int(exp(-t)t^(a-1), t=0..x) for real a > 0, x > 0`
+/// where `a` is the argument for the gamma function and `x` is the upper
+/// integral limit.
+///
+/// # Remarks
+///
+/// Returns `f64::NAN` if either argument is `f64::NAN`
+///
+/// # Errors
+///
+/// if `a` or `x` are not in `(0, +inf)`
+#let gamma_lr(a, x) = {
   if a <= 0.0 or x <= 0.0 {
     return float.nan
   }
@@ -121,19 +149,77 @@
   1.0 - exp(ax) * ans
 }
 
-// Note that we add an extra guard for x <= 0 (we don't use the reflection formula for x < 0.5, so we need to handle negative x values separately) to avoid the singularity at x = 0 when evaluating the reflection formula for negative x values
-// TOOD: work out what the best way to handle out-of-domain values is (e.g. return NaN, 0, or throw an error)
-#let gamma(x) = {
-  if x <= 0.0 {
-    float.nan
-  } else if x < 0.5 {
-    let s = GAMMA_DK.enumerate().slice(1).fold(GAMMA_DK.at(0), (s, t) => s + t.at(1) / (t.at(0) - x))
+/// Computes the upper incomplete regularized gamma function
+/// `Q(a,x) = 1 / Gamma(a) * int(exp(-t)t^(a-1), t=0..x) for a > 0, x > 0`
+/// where `a` is the argument for the gamma function and
+/// `x` is the lower integral limit.
+///
+/// # Remarks
+///
+/// Returns `f64::NAN` if either argument is `f64::NAN`
+///
+/// # Errors
+///
+/// if `a` or `x` are not in `(0, +inf)`
+#let gamma_ur(a, x) = {
+  x = float(x) //TODO hackery
 
-    pi / (sin(pi * x) * s * TWO_SQRT_E_OVER_PI * (pow((0.5 - x + GAMMA_R) / e, 0.5 - x)))
-  } else {
-    let s = GAMMA_DK.enumerate().slice(1).fold(GAMMA_DK.at(0), (s, t) => s + t.at(1) / (x + t.at(0) - 1.0))
-
-    s * 2 * sqrt(e / pi) * pow((x - 0.5 + GAMMA_R) / exp(1), x - 0.5)
+  if a.is-nan() or x.is-nan() or a <= 0.0 or a.is-infinite() or x <= 0.0 or x.is-infinite() {
+    return float.nan
   }
-}
 
+  let eps = 0.000000000000001
+  let big = 4503599627370496.0
+  let big_inv = 2.22044604925031308085e-16
+
+  if x < 1.0 or x <= a {
+    return 1.0 - gamma_lr(a, x) //TODO check if this is right function
+  }
+
+  let ax = a * ln(x) - x - ln_gamma(a)
+  if ax < -709.78271289338399 {
+    return if a < x { 0.0 } else { 1.0 }
+  }
+
+  ax = exp(ax)
+  let y = 1.0 - a
+  let z = x + y + 1.0
+  let c = 0.0
+  let pkm2 = 1.0
+  let qkm2 = x
+  let pkm1 = x + 1.0
+  let qkm1 = z * x
+  let ans = pkm1 / qkm1
+
+  while true {
+    y += 1.0
+    z += 2.0
+    c += 1.0
+    let yc = y * c
+    let pk = pkm1 * z - pkm2 * yc
+    let qk = qkm1 * z - qkm2 * yc
+
+    pkm2 = pkm1
+    pkm1 = pk
+    qkm2 = qkm1
+    qkm1 = qk
+
+    if abs(pk) > big {
+      pkm2 *= big_inv
+      pkm1 *= big_inv
+      qkm2 *= big_inv
+      qkm1 *= big_inv
+    }
+
+    if qk != 0.0 {
+      let r = pk / qk
+      let t = abs((ans - r) / r)
+      ans = r
+
+      if t <= eps {
+        break
+      }
+    }
+  }
+  ans * ax
+}

@@ -1,5 +1,5 @@
 #import calc: exp, pi, pow, sqrt
-#import "../function/gamma.typ": gamma, lower_incomplete_gamma
+#import "../function/gamma.typ": gamma, gamma_lr
 
 /// Gamma distribution PDF
 ///
@@ -17,7 +17,7 @@
 /// - beta (float): rate parameter (= 1/scale)
 /// -> function
 #let cdf(alpha, beta) = {
-  x => lower_incomplete_gamma(alpha, beta * x)
+  x => gamma_lr(alpha, beta * x)
 }
 
 // Examples
