@@ -10,6 +10,36 @@
   // inset: 10pt,
   align: horizon,
   table.header([*Distribution*], [*PMF*], [*CDF*]),
+  [Uniform],
+  [
+    #let Unif = discrete_uniform.pmf(0, 4)
+    #let points = range(0, 5).map(i => scatter(((i, Unif(i)),)))
+    #plot(
+      width: 5,
+      height: 5,
+      xmin: -1,
+      xmax: 5,
+      ymin: 0,
+      ymax: 1.1,
+      axis-y-extend: 0,
+      ..points
+    )
+  ],
+  [
+    #let Unif = discrete_uniform.cdf(0, 4)
+    #let points = range(0, 5).map(i => scatter(((i, Unif(i)),)))
+    #plot(
+      width: 5,
+      height: 5,
+      xmin: -1,
+      xmax: 5,
+      ymin: 0,
+      ymax: 1.1,
+      axis-y-extend: 0,
+      ..points,
+    )
+   ],
+
   [Bernoulli],
   [
     #let p = 0.8
