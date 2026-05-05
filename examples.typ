@@ -123,23 +123,29 @@
 
   [Geometric],
   [
+    #let p = 0.2
+    #let Ge = geometric.pmf(p)
     #plot(
       width: 4,
       height: 4,
       xmin: 0,
-      xmax: 8,
+      xmax: 10,
       ymin: 0,
-      ymax: 1,
+      ymax: 0.3,
       xlabel: $k$,
       ylabel: $p(k) = (1-p)^(k-1)p$,
       axis-y-extend: 0,
-      (fn: geometric.pmf(0.2), label: $p=0.2$, label-pos: 0.1, label-side: "below-left"),
-      (fn: geometric.pmf(0.5), label: $p=0.5$, label-pos: 0.01, label-side: "left"),
-      (fn: geometric.pmf(0.8), label: $p=0.8$, label-pos: 0.1, label-side: "right"),
+
+      ..range(0, 9).map(i => scatter(((i, Ge(i)),))),
+      // (fn: geometric.pmf(0.2), label: $p=0.2$, label-pos: 0.1, label-side: "below-left"),
+      // (fn: geometric.pmf(0.5), label: $p=0.5$, label-pos: 0.01, label-side: "left"),
+      // (fn: geometric.pmf(0.8), label: $p=0.8$, label-pos: 0.1, label-side: "right"),
     )
   ],
 
   [
+    #let p = 0.2
+    #let Ge = geometric.cdf(p)
     #plot(
       width: 4,
       height: 4,
@@ -151,9 +157,10 @@
       ylabel: $F(k) = 1 - (1-p)^k$,
 
       axis-y-extend: 0,
-      (fn: geometric.cdf(0.2), label: $p=0.2$, label-pos: 0.5, label-side: "below-right"),
-      (fn: geometric.cdf(0.5), label: $p=0.5$, label-pos: 0.5, label-side: "below-right"),
-      (fn: geometric.cdf(0.8), label: $p=0.8$, label-pos: 0.5, label-side: "above-right"),
+      ..range(0, 9).map(i => scatter(((i, Ge(i)),))),
+      // (fn: geometric.cdf(0.2), label: $p=0.2$, label-pos: 0.5, label-side: "below-right"),
+      // (fn: geometric.cdf(0.5), label: $p=0.5$, label-pos: 0.5, label-side: "below-right"),
+      // (fn: geometric.cdf(0.8), label: $p=0.8$, label-pos: 0.5, label-side: "above-right"),
     )
   ],
 
