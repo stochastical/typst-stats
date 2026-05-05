@@ -10,6 +10,7 @@ Defines common probability distributions and their associated functions (pdf, cd
 - Binomial distribution
 - Bernoulli distribution
 - Geometric distribution
+- Poisson distribution
 
 ## Continuous distributions
 
@@ -18,3 +19,5 @@ Defines common probability distributions and their associated functions (pdf, cd
 - Gamma distribution
 - Normal distribution
 
+> [!NOTE]
+> This library is heavily inspired by the [`statrs`](https://github.com/statrs-dev/statrs) Rust crate.
