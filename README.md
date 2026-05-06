@@ -4,6 +4,7 @@ Defines common probability distributions and their associated functions (pdf, cd
 
 > [!WARNING]
 > This library is still in early development, and the API is likely to change. Use with caution.
+> This library is heavily inspired by the [`statrs`](https://github.com/statrs-dev/statrs) Rust crate.
 
 ## Discrete distributions
 
@@ -11,6 +12,7 @@ Defines common probability distributions and their associated functions (pdf, cd
 - Bernoulli distribution
 - Geometric distribution
 - Poisson distribution
+- Discrete uniform distribution
 
 ## Continuous distributions
 
@@ -19,6 +21,3 @@ Defines common probability distributions and their associated functions (pdf, cd
 - Exponential distribution
 - Gamma distribution
 - Normal distribution
-
-> [!NOTE]
-> This library is heavily inspired by the [`statrs`](https://github.com/statrs-dev/statrs) Rust crate.
