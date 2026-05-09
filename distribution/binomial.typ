@@ -31,19 +31,6 @@
   k => if k >= n { 1.0 } else { beta-reg(n - k, k + 1)(1 - p) }
 }
 
-```rust
-(0..self.n).fold(0, |acc, _| {
-            let n: f64 = rng.gen();
-            if n < self.p {
-                acc + 1
-            } else {
-                acc
-            }
-        })
-    }
-```
-
-
 ///
 ///
 /// - _ ():
