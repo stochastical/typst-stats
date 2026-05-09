@@ -1,10 +1,11 @@
-#import "distribution/bernoulli.typ" as bernoulli
-#import "distribution/beta.typ" as beta
-#import "distribution/binomial.typ" as binomial
-#import "distribution/exponential.typ" as exponential
-#import "distribution/gamma.typ" as gamma
-#import "distribution/geometric.typ" as geometric
-#import "distribution/poisson.typ" as poisson
-#import "distribution/normal.typ" as normal
-#import "distribution/continuous_uniform.typ" as continuous_uniform
-#import "distribution/discrete_uniform.typ" as discrete_uniform
+#import "distribution/bernoulli.typ"
+#import "distribution/beta.typ"
+#import "distribution/binomial.typ"
+#import "distribution/categorical.typ"
+#import "distribution/exponential.typ"
+#import "distribution/gamma.typ"
+#import "distribution/geometric.typ"
+#import "distribution/poisson.typ"
+#import "distribution/normal.typ"
+#import "distribution/continuous-uniform.typ"
+#import "distribution/discrete-uniform.typ"

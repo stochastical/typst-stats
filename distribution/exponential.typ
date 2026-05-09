@@ -1,6 +1,6 @@
 #import calc: exp, pow
 
-#let Exponential(rate) = {
+#let new(rate) = {
   assert(rate > 0, message: "Rate parameter " + str(rate) + " must be positive.")
   (λ: rate, mean: 1 / rate, variance: 1 / pow(rate, 2))
 }

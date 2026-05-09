@@ -1,5 +1,4 @@
-
-#let Bernoulli(p) = {
+#let new(p) = {
   assert(p >= 0.0 and p <= 1.0, message: "Probability p=" + str(p) + " must be in the range $[0, 1]$")
   (
     p: p,

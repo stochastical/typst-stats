@@ -1,6 +1,6 @@
 #import calc: min, pow
 
-#let DiscreteUniform(a, b) = {
+#let new(a, b) = {
   assert(a < b, message: "Lower bound " + str(a) + " must be less than upper bound " + str(b) + ".")
   (
     a: a,

@@ -4,7 +4,7 @@
 ///
 /// - z (float):
 /// -> float
-#let gamma_stirling_approx(z) = {
+#let gamma-stirling-approx(z) = {
   if z <= 0.0 {
     float.nan
   } else {
@@ -48,7 +48,7 @@
   }
 }
 
-#let ln_gamma(x) = {
+#let lm-gamma(x) = {
   if x < 0.5 {
     let s = GAMMA_DK.enumerate().slice(1).fold(GAMMA_DK.at(0), (s, t) => s + t.at(1) / (t.at(0) - x))
 
@@ -72,7 +72,7 @@
 /// # Errors
 ///
 /// if `a` or `x` are not in `(0, +inf)`
-#let gamma_lr(a, x) = {
+#let gamma-lr(a, x) = {
   if a <= 0.0 or x <= 0.0 {
     return float.nan
   }
@@ -81,7 +81,7 @@
   let big = 4503599627370496.0
   let big_inv = 2.22044604925031308085e-16
 
-  let ax = a * ln(x) - x - ln_gamma(a)
+  let ax = a * ln(x) - x - lm-gamma(a)
   if ax < -709.78271289338399 {
     if a < x {
       return 1.0
@@ -161,7 +161,7 @@
 /// # Errors
 ///
 /// if `a` or `x` are not in `(0, +inf)`
-#let gamma_ur(a, x) = {
+#let gamma-ur(a, x) = {
   x = float(x) //TODO hackery
 
   if a.is-nan() or x.is-nan() or a <= 0.0 or a.is-infinite() or x <= 0.0 or x.is-infinite() {
@@ -173,10 +173,10 @@
   let big_inv = 2.22044604925031308085e-16
 
   if x < 1.0 or x <= a {
-    return 1.0 - gamma_lr(a, x) //TODO check if this is right function
+    return 1.0 - gamma-lr(a, x) //TODO check if this is right function
   }
 
-  let ax = a * ln(x) - x - ln_gamma(a)
+  let ax = a * ln(x) - x - lm-gamma(a)
   if ax < -709.78271289338399 {
     return if a < x { 0.0 } else { 1.0 }
   }

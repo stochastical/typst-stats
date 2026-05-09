@@ -1,7 +1,7 @@
 #import calc: binom, pow
-#import "../function/beta.typ": beta_reg
+#import "../function/beta.typ": beta-reg
 
-#let Binomial(n, p) = {
+#let new(n, p) = {
   assert(n >= 0, message: "Number of trials " + str(n) + " must be non-negative.")
   assert(p >= 0.0 and p <= 1.0, message: "Probability of success " + str(p) + " must be in the range [0, 1].")
   (
@@ -26,7 +26,7 @@
 ///
 /// where $I_(x)(a, b)$ is the regularized incomplete beta function
 #let cdf((n: n, p: p)) = {
-  k => if k >= n { 1.0 } else { beta_reg(n - k, k + 1)(1 - p) }
+  k => if k >= n { 1.0 } else { beta-reg(n - k, k + 1)(1 - p) }
 }
 
 /// $F(k) = sum_(i=0)^(k) p(i)$ for $k in {0, 1, ..., n}$

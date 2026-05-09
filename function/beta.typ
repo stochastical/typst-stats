@@ -1,5 +1,5 @@
 #import calc: abs, exp, ln
-#import "gamma.typ": gamma, ln_gamma
+#import "gamma.typ": gamma, lm-gamma
 
 /// Computes the regularized lower incomplete beta function
 /// `I_x(a,b) = 1/Beta(a,b) * int(t^(a-1)*(1-t)^(b-1), t=0..x)`
@@ -14,7 +14,7 @@
 #let MIN_POSITIVE = 2.2250738585072014e-308
 #let F64_PREC = 0.00000000000000011102230246251565
 
-#let beta_reg(a, b) = {
+#let beta-reg(a, b) = {
   assert(a > 0.0, message: "Beta function parameter a must be greater than 0")
   assert(b > 0.0, message: "Beta function parameter b must be greater than 0")
   x => {
@@ -23,7 +23,7 @@
     let bt = if x == 0.0 or x == 1.0 {
       0.0
     } else {
-      exp(ln_gamma(a + b) - ln_gamma(a) - ln_gamma(b) + a * ln(x) + b * ln(1.0 - x))
+      exp(lm-gamma(a + b) - lm-gamma(a) - lm-gamma(b) + a * ln(x) + b * ln(1.0 - x))
     }
     bt
 

@@ -1,8 +1,8 @@
 #import calc: pow
-#import "../function/gamma.typ": gamma, ln_gamma
-#import "../function/beta.typ": beta_reg
+#import "../function/gamma.typ": gamma, lm-gamma
+#import "../function/beta.typ": beta-reg
 
-#let Beta(alpha: 1.0, beta: 1.0) = {
+#let new(alpha: 1.0, beta: 1.0) = {
   let (α, β) = (alpha, beta)
   assert(α > 0, message: "Alpha parameter " + str(α) + " must be positive.")
   assert(β > 0, message: "Beta parameter " + str(β) + " must be positive.")
@@ -36,7 +36,7 @@
     } else if α == 1.0 and β == 1.0 {
       0.0
     } else {
-      let aa = ln_gamma(α + β) - ln_gamma(α) - ln_gamma(β)
+      let aa = lm-gamma(α + β) - lm-gamma(α) - lm-gamma(β)
       let bb = if α == 1.0 and x == 0.0 {
         0.0
       } else if x == 0.0 {
@@ -66,7 +66,7 @@
     } else if α == 1.0 and β == 1.0 {
       x
     } else {
-      beta_reg(α, β)(x)
+      beta-reg(α, β)(x)
     }
   }
 }

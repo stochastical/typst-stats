@@ -1,7 +1,7 @@
 #import calc: exp, pi, pow, sqrt
-#import "../function/gamma.typ": gamma, gamma_lr
+#import "../function/gamma.typ": gamma, gamma-lr
 
-#let Gamma(shape: 1.0, rate: 1.0) = {
+#let new(shape: 1.0, rate: 1.0) = {
   let (α, β) = (shape, rate)
   assert(α > 0, message: "Shape parameter " + str(α) + " must be positive.")
   assert(β > 0, message: "Rate parameter " + str(β) + " must be positive.")
@@ -27,7 +27,7 @@
 /// - beta (float): rate parameter (= 1/scale)
 /// -> function
 #let cdf((α: α, β: β)) = {
-  x => gamma_lr(α, β * x)
+  x => gamma-lr(α, β * x)
 }
 
 // Examples
