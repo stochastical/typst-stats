@@ -1,6 +1,9 @@
 #import "@preview/suiji:0.5.1": *
-#import "./lib.typ": categorical
+#import "../lib.typ": categorical
 
+== Sampling Random Variates
+
+=== Categorical Distribution
 #let n_samples = 1000
 #let Cat = categorical.new((0.1, 0.3, 0.2, 0.4))
 #let counts = (0,) * Cat.weights.len()
